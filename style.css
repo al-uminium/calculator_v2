@@ -14,8 +14,8 @@ html, body {
 
 #calc-container {
     display: grid;
-    width: 35rem;
-    height: 45rem;
+    width: 30rem;
+    height: 40rem;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 2fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas: 
@@ -52,7 +52,7 @@ html, body {
 
 
 .button {
-    width: 6rem;
+    width: 4rem;
     height: 4rem;
     background-color: rgb(33, 33, 46);
     justify-self: center;
@@ -76,7 +76,7 @@ html, body {
 
 .zero {
     grid-area: zero;
-    width: 14.8rem;
+    width: 11.5rem;
 }
 
 /*grid area naming below, sorry for the spam*/
