@@ -17,7 +17,7 @@ const updateCalculatorText = (curr) => {
 }
 
 const updateCalculatorDisplay = (curr) => {
-    calculatorDisplay.innerText = calculatorText.value += curr;
+    calculatorDisplay.innerText = calculatorText.value + curr;    
     calculatorText.value = ""
 }
 
@@ -28,6 +28,10 @@ const allClear = () => {
 
 const plusMinus = (a) => {
     // will add later
+}
+
+const splitString = (str) => {
+
 }
 
 const operate = (a,b,op) => {
@@ -60,6 +64,23 @@ const validator = (str) => {
     }
 }
 
+const checkForArOperators = () => {
+    const currentDisplayText = calculatorDisplay.innerText;
+    const arOper = ["÷", "×", "+", "-"];
+
+    //check if it contains any of the arithmetic operators, returns true if there is
+    let containsArOper = false;
+
+    //indexOf() returns -1, which using the bitwise NOT ~ operator turns it into a 0 [falsy value]. !! is a logical NOT to convert into bool.
+    for (let i = 0; i<4; i++ ) {
+        if (!!~currentDisplayText.indexOf(arOper[i])) {
+            containsArOper = true;
+        }
+    }
+
+    return containsArOper
+}
+
 //event listeners
 buttons.forEach(button => {
     button.addEventListener("click", (trg) => {
@@ -70,15 +91,15 @@ buttons.forEach(button => {
             allClear()
         }
         
-        if (validator(ele)) {
-            if (classOfTrg.contains("ar-oper")) {
-                updateCalculatorDisplay(ele);
-            } else if (classOfTrg.contains("equal")) {
-                operate
-            } else {
-                updateCalculatorText(ele)
-            }
+        
+        if (classOfTrg.contains("ar-oper")) {
+            updateCalculatorDisplay(ele);
+        } else if (classOfTrg.contains("equal")) {
+            operate
+        } else {
+            updateCalculatorText(ele)
         }
+        
     })
 });
 
