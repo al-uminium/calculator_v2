@@ -21,9 +21,9 @@ html, body {
     grid-template-areas: 
         "display display display display"
         "AC plmn percent divide"
-        "one two three mult"
+        "seven eight nine mult"
         "four five six add"
-        "seven eight nine minus"
+        "one two three minus"
         "zero zero decimal equal";
     justify-self: center;
     align-self: center;

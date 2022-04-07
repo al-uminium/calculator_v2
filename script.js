@@ -1,72 +1,122 @@
 //queryselectors
 const buttons = document.querySelectorAll(".button");
 const equal = document.querySelector("#equal");
-const calculatorText = document.querySelector("#calculator-text");
-const calculatorDisplay = document.querySelector("#calculated-display");
+const lowerDisplay = document.querySelector("#lower-display");
+const upperDisplay = document.querySelector("#upper-display");
 
 //basic math functions
-const add = (a,b) => a+b;
-const subtract = (a,b) => a-b;
-const multiply = (a,b) => a*b;
-const divide = (a,b) => a/b;
-const exponential = (a,b) => a**b;
+const add = (a,b) => Number(a)+Number(b);
+const subtract = (a,b) => Number(a)-Number(b);
+const multiply = (a,b) => Number(a)*Number(b);
+const divide = (a,b) => Number(a)/Number(b);
+const exponential = (a,b) => Number(a)**Number(b);
+
+const arOper = ["÷", "×", "+", "-"]
 
 //calculator functions
-const updateCalculatorText = (curr) => {
-    calculatorText.value += curr
+const updateLowerDisplay = (curr) => {
+    lowerDisplay.value += curr
 }
 
-const updateCalculatorDisplay = (curr) => {
-    calculatorDisplay.innerText = calculatorText.value + curr;    
-    calculatorText.value = ""
+const operate = () => {
+    const expression = upperDisplay.innerText + lowerDisplay.value
+    const splitExpr = splitString(expression)
+    const calculatedVal = calculate(...splitExpr)
+    
+    return calculatedVal
+}
+
+const updateUpperDisplay = (curr) => {
+    const upperDisplayLength = upperDisplay.innerText.length;
+    const lowerDisplayLength = lowerDisplay.value.length
+
+    if (upperDisplayLength || lowerDisplayLength) {
+        //check if lower display & upper display has text
+        if (lowerDisplayLength && upperDisplayLength) {
+            //run validation check
+            const calculatedVal = operate()
+            upperDisplay.innerText = curr == "=" ? String(calculatedVal) : String(calculatedVal) + curr
+            lowerDisplay.value = ""
+        }
+
+        //if upper is empty, update upper
+        if (!upperDisplayLength) {
+            upperDisplay.innerText = lowerDisplay.value + curr;
+            lowerDisplay.value = ""
+        }
+
+        if (upperDisplayLength && !lowerDisplayLength) {
+            if (splitString) {
+
+            }
+        }
+    }
+
+    //if 
 }
 
 const allClear = () => {
-    calculatorText.value = ""
-    calculatorDisplay.innerText = ""
+    lowerDisplay.value = ""
+    upperDisplay.innerText = ""
 }
 
 const plusMinus = (a) => {
     // will add later
 }
 
-const splitString = (str) => {
 
+//function splits an expression into an array of size 3 with it's constituents, e.g., 1+1 => ["1","1","+"], 1 => ["1","",""]
+const splitString = (expr) => {
+    
+    for (let x=0; x<4; x++) {
+        if (expr.includes(arOper[x])) {
+            let i = 0;
+            while (expr.indexOf(arOper[i]) < 0) {
+                i++;
+            }
+            const operIndex = expr.indexOf(arOper[i])
+            const a = expr.slice(0, operIndex)
+            const b = expr.slice(operIndex+1, expr.length)
+            const oper = arOper[i]
+            return [a, b, oper]
+
+        } 
+    }
+
+    return [expr, "", ""]
 }
 
-const operate = (a,b,op) => {
+const calculate = (a,b,op) => {
     switch(op) {
         case 'plmn':
             plusMinus(a);
             break;
         case '+':
-            add(a,b);
-            break;
+            return add(a,b);
         case '-':
-            subtract(a,b);
-            break;
+            return subtract(a,b);
         case '×':
-            multiply(a,b);
+            return multiply(a,b);
         case '÷':
-            divide(a,b);
-            break;
+            return divide(a,b);
     }
 }
 
-const validator = (str) => {
-    const NaNIfString = Number(str);
-    const lenOfCalcText = calculatorText.value.length;
 
-    if (!lenOfCalcText && isNaN(NaNIfString)) {
-        console.log("Nope")
-    } else {
-        return true
-    }
-}
+// Below code probably needs to be split into 2 different validation types (for upper and lower display)
+// const validator = (str) => {
+//     const NaNIfString = Number(str);
+//     const lenOfCalcText = lowerDisplay.value.length;
+
+//     if (!lenOfCalcText && isNaN(NaNIfString)) {
+//         console.log("Nope")
+//     } else {
+//         return true
+//     }
+// }
 
 const checkForArOperators = () => {
-    const currentDisplayText = calculatorDisplay.innerText;
-    const arOper = ["÷", "×", "+", "-"];
+    const currentDisplayText = upperDisplay.innerText;
 
     //check if it contains any of the arithmetic operators, returns true if there is
     let containsArOper = false;
@@ -89,17 +139,12 @@ buttons.forEach(button => {
 
         if (classOfTrg.contains("AC")) {
             allClear()
-        }
-        
-        
-        if (classOfTrg.contains("ar-oper")) {
-            updateCalculatorDisplay(ele);
-        } else if (classOfTrg.contains("equal")) {
-            operate
+        } else if (classOfTrg.contains("ar-oper")) {
+            updateUpperDisplay(ele);
         } else {
-            updateCalculatorText(ele)
-        }
-        
+            updateLowerDisplay(ele)
+        }        
+
     })
 });
 
