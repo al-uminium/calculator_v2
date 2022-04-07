@@ -46,9 +46,8 @@ const updateUpperDisplay = (curr) => {
         }
 
         if (upperDisplayLength && !lowerDisplayLength) {
-            if (splitString) {
-
-            }
+            const expr = splitString(upperDisplay.innerText)
+            upperDisplay.innerText = expr[0] + curr
         }
     }
 

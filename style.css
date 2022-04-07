@@ -20,7 +20,7 @@ html, body {
     grid-template-rows: 2fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas: 
         "display display display display"
-        "AC plmn percent divide"
+        "AC plmn power divide"
         "seven eight nine mult"
         "four five six add"
         "one two three minus"
@@ -89,8 +89,8 @@ html, body {
     grid-area: plmn;
 }
 
-.percent {
-    grid-area: percent;
+.power {
+    grid-area: power;
 }
 
 .divide {
