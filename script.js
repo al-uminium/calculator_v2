@@ -3,6 +3,7 @@ const buttons = document.querySelectorAll(".button");
 const equal = document.querySelector("#equal");
 const lowerDisplay = document.querySelector("#lower-display");
 const upperDisplay = document.querySelector("#upper-display");
+const displayContainer = document.querySelector("#display-container")
 
 //basic math functions
 const add = (a,b) => Number(a)+Number(b);
@@ -14,12 +15,8 @@ const exponential = (a,b) => Number(a)**Number(b);
 const arOper = ["÷", "×", "+", "-"]
 
 //calculator functions
-const updateLowerDisplay = (curr) => {
-    lowerDisplay.value += curr
-}
-
 const operate = () => {
-    const expression = upperDisplay.innerText + lowerDisplay.value
+    const expression = upperDisplay.innerText + lowerDisplay.innerText
     const splitExpr = splitString(expression)
     const calculatedVal = calculate(...splitExpr)
     
@@ -34,29 +31,46 @@ const convertToArOper = (op) => {
             return "×"
         case "Enter":
             return "="
+        case "Backspace":
+            return "DEL"
         default:
             return op
     }
 }
 
+const updateLowerDisplay = (curr) => {
+    curr = convertToArOper(curr)
+    if (curr == "DEL") {
+        lowerDisplay.innerText = lowerDisplay.innerText.slice(0,-1)
+    } else if (curr == "plmn") {
+        lowerDisplay.innerText = plusMinus(lowerDisplay.innerText)
+    } else {
+        lowerDisplay.innerText += curr
+        
+    }
+}
 
 //takes in an arithmetic operator as input
 const updateUpperDisplay = (curr) => {
     const upperDisplayLength = upperDisplay.innerText.length;
-    const lowerDisplayLength = lowerDisplay.value.length
+    const lowerDisplayLength = lowerDisplay.innerText.length
     curr = convertToArOper(curr)
 
     if (upperDisplayLength || lowerDisplayLength) {
         //check if lower display & upper display has text
         if (lowerDisplayLength && upperDisplayLength) {
             //run validation check
-            const calculatedVal = operate()
-            upperDisplay.innerText = (curr == "=") ? String(calculatedVal) : String(calculatedVal) + curr
+            if (arOper.includes(upperDisplay.innerText[upperDisplayLength-1])) {
+                const calculatedVal = operate()
+                upperDisplay.innerText = (curr == "=") ? String(calculatedVal) : String(calculatedVal) + curr
+            } else {
+                upperDisplay.innerText = lowerDisplay.innerText
+            }
         }
 
         //if upper is empty, update upper
         if (!upperDisplayLength) {
-            upperDisplay.innerText = (curr == "=") ? lowerDisplay.value : lowerDisplay.value + curr;
+            upperDisplay.innerText = (curr == "=") ? lowerDisplay.innerText : lowerDisplay.innerText + curr;
         }
 
         if (upperDisplayLength && !lowerDisplayLength) {
@@ -66,18 +80,21 @@ const updateUpperDisplay = (curr) => {
             }
         }
     }
-    lowerDisplay.value = ""
+    lowerDisplay.innerText = ""
 }
 
 const allClear = () => {
-    lowerDisplay.value = ""
+    lowerDisplay.innerText = ""
     upperDisplay.innerText = ""
 }
 
 const plusMinus = (a) => {
-    // will add later
+    if (a[0] == "-") {
+        return a.slice(1,a.length)
+    } else {
+        return "-"+a
+    }
 }
-
 
 //function splits an expression into an array of size 3 with it's constituents, e.g., 1+1 => ["1","1","+"], 1 => ["1","",""]
 const splitString = (expr) => {
@@ -102,9 +119,6 @@ const splitString = (expr) => {
 
 const calculate = (a,b,op) => {
     switch(op) {
-        case 'plmn':
-            plusMinus(a);
-            break;
         case '+':
             return add(a,b);
         case '-':
@@ -162,7 +176,12 @@ buttons.forEach(button => {
     })
 });
 
-lowerDisplay.addEventListener("keyup", (trg) => {
+displayContainer.addEventListener("keydown", (trg) => {
+    console.log(trg.key)
+    if (!isNaN(Number(trg.key)) || trg.key == "Backspace") {
+        updateLowerDisplay(trg.key)
+    }
+
     if (trg.key == "Enter" || trg.key == "+" || trg.key == "-" || trg.key == "/" || trg.key == "*") {
         updateUpperDisplay(trg.key)
     }

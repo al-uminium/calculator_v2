@@ -20,7 +20,7 @@ html, body {
     grid-template-rows: 2fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas: 
         "display display display display"
-        "AC plmn power divide"
+        "AC DEL plmn divide"
         "seven eight nine mult"
         "four five six add"
         "one two three minus"
@@ -28,17 +28,6 @@ html, body {
     justify-self: center;
     align-self: center;
 
-}
-
-#display-container input[type="text"] {
-    background-color: transparent;
-    border: 0;
-    font-size: 2rem;
-    text-align: right;
-}
-
-#display-container input[type="text"]:focus {
-    outline: none;
 }
 
 #display-container {
@@ -50,11 +39,23 @@ html, body {
     border-radius: 1.5rem;
 }
 
-#upper-display {
-    padding: 0.5rem;
-    font-size: 2rem;
+#display-container:hover {
+    background-color: rgb(163, 173, 196);
 }
 
+#display-container:focus {
+    outline: 0.3rem solid rgb(44, 48, 104);
+}
+
+#upper-display {
+    padding: 0.5rem;
+    font-size: 2.5rem;
+}
+
+#lower-display {
+    text-align: right;
+    font-size: 2.5rem;
+}
 
 .button {
     width: 4rem;
@@ -95,8 +96,8 @@ html, body {
     grid-area: plmn;
 }
 
-.power {
-    grid-area: power;
+.DEL {
+    grid-area: DEL;
 }
 
 .divide {
