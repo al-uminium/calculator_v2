@@ -26,32 +26,47 @@ const operate = () => {
     return calculatedVal
 }
 
+const convertToArOper = (op) => {
+    switch (op) {
+        case "/":
+            return "÷"
+        case "*":
+            return "×"
+        case "Enter":
+            return "="
+        default:
+            return op
+    }
+}
+
+
+//takes in an arithmetic operator as input
 const updateUpperDisplay = (curr) => {
     const upperDisplayLength = upperDisplay.innerText.length;
     const lowerDisplayLength = lowerDisplay.value.length
+    curr = convertToArOper(curr)
 
     if (upperDisplayLength || lowerDisplayLength) {
         //check if lower display & upper display has text
         if (lowerDisplayLength && upperDisplayLength) {
             //run validation check
             const calculatedVal = operate()
-            upperDisplay.innerText = curr == "=" ? String(calculatedVal) : String(calculatedVal) + curr
-            lowerDisplay.value = ""
+            upperDisplay.innerText = (curr == "=") ? String(calculatedVal) : String(calculatedVal) + curr
         }
 
         //if upper is empty, update upper
         if (!upperDisplayLength) {
-            upperDisplay.innerText = lowerDisplay.value + curr;
-            lowerDisplay.value = ""
+            upperDisplay.innerText = (curr == "=") ? lowerDisplay.value : lowerDisplay.value + curr;
         }
 
         if (upperDisplayLength && !lowerDisplayLength) {
             const expr = splitString(upperDisplay.innerText)
-            upperDisplay.innerText = expr[0] + curr
+            if (curr != "=") {
+                upperDisplay.innerText = expr[0] + curr
+            }
         }
     }
-
-    //if 
+    lowerDisplay.value = ""
 }
 
 const allClear = () => {
@@ -147,4 +162,9 @@ buttons.forEach(button => {
     })
 });
 
+lowerDisplay.addEventListener("keyup", (trg) => {
+    if (trg.key == "Enter" || trg.key == "+" || trg.key == "-" || trg.key == "/" || trg.key == "*") {
+        updateUpperDisplay(trg.key)
+    }
+})
 

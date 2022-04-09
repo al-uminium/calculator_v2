@@ -50,6 +50,11 @@ html, body {
     border-radius: 1.5rem;
 }
 
+#upper-display {
+    padding: 0.5rem;
+    font-size: 2rem;
+}
+
 
 .button {
     width: 4rem;
@@ -63,6 +68,7 @@ html, body {
     border-radius: 2rem;
     font-size: 1.5rem;
     color: aliceblue;
+    cursor: pointer;
 }
 
 .oper {
