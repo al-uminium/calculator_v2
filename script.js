@@ -56,13 +56,9 @@ const convertToArOper = (op) => {
     }
 }
 
-
-//if exponential, update lower display using this function
-
 const updateLowerDisplay = (curr) => {
     curr = convertToArOper(curr)
 
-    //convert from exponential to num first, if length is > 19
     if (curr == "DEL") {
         lowerDisplay.innerText = lowerDisplay.innerText.slice(0,-1)
     } else if (curr == "plmn") {
@@ -83,7 +79,7 @@ const updateUpperDisplay = (curr) => {
     if (upperDisplayLength || lowerDisplayLength) {
         //check if lower display & upper display has text
         if (lowerDisplayLength && upperDisplayLength) {
-            //run validation check
+ 
             if (arOper.includes(upperDisplay.innerText[upperDisplayLength-1])) {
                 const calculatedVal = operate()
                 upperDisplay.innerText = (curr == "=") ? String(calculatedVal) : String(calculatedVal) + " " + curr
