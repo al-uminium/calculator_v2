@@ -47,7 +47,7 @@ html, body {
 }
 
 #display-container:focus {
-    outline: 0.3rem solid rgb(44, 48, 104);
+    outline: 0.4rem solid rgb(56, 149, 255);
 }
 
 #upper-display {
