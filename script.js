@@ -12,6 +12,23 @@ const multiply = (a,b) => Number(a)*Number(b);
 const divide = (a,b) => Number(a)/Number(b);
 const exponential = (a,b) => Number(a)**Number(b);
 
+const calculate = (a,op,b) => {
+    switch(op) {
+        case '+':
+            return add(a,b);
+        case '-':
+            return subtract(a,b);
+        case '×':
+            return multiply(a,b);
+        case '÷':
+            if (b==0) {
+                return "don't break me pls ;w;"
+            } else {
+                return divide(a,b);
+            }
+    }
+}
+
 const arOper = ["÷", "×", "+", "-"]
 
 //calculator functions
@@ -39,23 +56,21 @@ const convertToArOper = (op) => {
     }
 }
 
-const convertToNum = (str) => String(Number(str))
+
+//if exponential, update lower display using this function
 
 const updateLowerDisplay = (curr) => {
     curr = convertToArOper(curr)
 
     //convert from exponential to num first, if length is > 19
-
     if (curr == "DEL") {
         lowerDisplay.innerText = lowerDisplay.innerText.slice(0,-1)
     } else if (curr == "plmn") {
         lowerDisplay.innerText = plusMinus(lowerDisplay.innerText)
+    } else if (lowerDisplay.innerText.includes(".") && curr==".") {
+        lowerDisplay.innerText = lowerDisplay.innerText
     } else {
         lowerDisplay.innerText = lowerDisplay.innerText + curr
-    }
-
-    if (lowerDisplay.innerText.length>19)  {
-        lowerDisplay.innerText = "WIP"
     }
 }
 
@@ -79,7 +94,7 @@ const updateUpperDisplay = (curr) => {
 
         //if upper is empty, update upper
         if (!upperDisplayLength) {
-            upperDisplay.innerText = (curr == "=") ? lowerDisplay.innerText : lowerDisplay.innerText + " " + curr;
+            upperDisplay.innerText = (curr == "=") ? Number(lowerDisplay.innerText) : Number(lowerDisplay.innerText) + " " + curr;
         }
 
         if (upperDisplayLength && !lowerDisplayLength) {
@@ -103,35 +118,6 @@ const plusMinus = (a) => {
     } else {
         return "-"+a
     }
-}
-
-const calculate = (a,op,b) => {
-    switch(op) {
-        case '+':
-            return add(a,b);
-        case '-':
-            return subtract(a,b);
-        case '×':
-            return multiply(a,b);
-        case '÷':
-            return divide(a,b);
-    }
-}
-
-const checkForArOperators = () => {
-    const currentDisplayText = upperDisplay.innerText;
-
-    //check if it contains any of the arithmetic operators, returns true if there is
-    let containsArOper = false;
-
-    //indexOf() returns -1, which using the bitwise NOT ~ operator turns it into a 0 [falsy value]. !! is a logical NOT to convert into bool.
-    for (let i = 0; i<4; i++ ) {
-        if (!!~currentDisplayText.indexOf(arOper[i])) {
-            containsArOper = true;
-        }
-    }
-
-    return containsArOper
 }
 
 //event listeners

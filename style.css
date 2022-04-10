@@ -38,7 +38,8 @@ html, body {
     grid-template-rows: 1.5fr 1fr;
     border-radius: 1.5rem;
     width: 89%;
-    /* height: 100%; */
+    overflow: hidden;
+    justify-self: center;
 }
 
 #display-container:hover {
@@ -51,12 +52,20 @@ html, body {
 
 #upper-display {
     padding: 0.5rem;
-    font-size: 2.5rem;
+    font-size: 2rem;
+}
+
+#lower-display-container {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
 }
 
 #lower-display {
-    text-align: right;
-    font-size: 2.5rem;
+    user-select: text;
+    white-space: nowrap;
+    float: right;
+    font-size: 2.2rem;
 }
 
 .button {
