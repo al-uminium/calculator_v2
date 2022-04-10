@@ -9,3 +9,6 @@ Main improvements from previous version:
 - Ability to change number to positive/negative
 
 All in all it was a good practice, even though this took me a lot more time than I'd expected it to be. 
+
+Live site: https://al-uminium.github.io/calculator_v2/
+Previous version: https://al-uminium.github.io/calculator/
