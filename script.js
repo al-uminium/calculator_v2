@@ -16,8 +16,9 @@ const arOper = ["÷", "×", "+", "-"]
 
 //calculator functions
 const operate = () => {
-    const expression = upperDisplay.innerText + lowerDisplay.innerText
-    const splitExpr = splitString(expression)
+    const expression = upperDisplay.innerText + " " + lowerDisplay.innerText
+    const splitExpr = expression.split(" ")
+    console.log(splitExpr)
     const calculatedVal = calculate(...splitExpr)
     
     return calculatedVal
@@ -38,15 +39,23 @@ const convertToArOper = (op) => {
     }
 }
 
+const convertToNum = (str) => String(Number(str))
+
 const updateLowerDisplay = (curr) => {
     curr = convertToArOper(curr)
+
+    //convert from exponential to num first, if length is > 19
+
     if (curr == "DEL") {
         lowerDisplay.innerText = lowerDisplay.innerText.slice(0,-1)
     } else if (curr == "plmn") {
         lowerDisplay.innerText = plusMinus(lowerDisplay.innerText)
     } else {
-        lowerDisplay.innerText += curr
-        
+        lowerDisplay.innerText = lowerDisplay.innerText + curr
+    }
+
+    if (lowerDisplay.innerText.length>19)  {
+        lowerDisplay.innerText = "WIP"
     }
 }
 
@@ -62,7 +71,7 @@ const updateUpperDisplay = (curr) => {
             //run validation check
             if (arOper.includes(upperDisplay.innerText[upperDisplayLength-1])) {
                 const calculatedVal = operate()
-                upperDisplay.innerText = (curr == "=") ? String(calculatedVal) : String(calculatedVal) + curr
+                upperDisplay.innerText = (curr == "=") ? String(calculatedVal) : String(calculatedVal) + " " + curr
             } else {
                 upperDisplay.innerText = lowerDisplay.innerText
             }
@@ -70,13 +79,13 @@ const updateUpperDisplay = (curr) => {
 
         //if upper is empty, update upper
         if (!upperDisplayLength) {
-            upperDisplay.innerText = (curr == "=") ? lowerDisplay.innerText : lowerDisplay.innerText + curr;
+            upperDisplay.innerText = (curr == "=") ? lowerDisplay.innerText : lowerDisplay.innerText + " " + curr;
         }
 
         if (upperDisplayLength && !lowerDisplayLength) {
-            const expr = splitString(upperDisplay.innerText)
+            const expr = upperDisplay.innerText.split(" ")
             if (curr != "=") {
-                upperDisplay.innerText = expr[0] + curr
+                upperDisplay.innerText = expr[0] + " " + curr + " "
             }
         }
     }
@@ -96,28 +105,7 @@ const plusMinus = (a) => {
     }
 }
 
-//function splits an expression into an array of size 3 with it's constituents, e.g., 1+1 => ["1","1","+"], 1 => ["1","",""]
-const splitString = (expr) => {
-    
-    for (let x=0; x<4; x++) {
-        if (expr.includes(arOper[x])) {
-            let i = 0;
-            while (expr.indexOf(arOper[i]) < 0) {
-                i++;
-            }
-            const operIndex = expr.indexOf(arOper[i])
-            const a = expr.slice(0, operIndex)
-            const b = expr.slice(operIndex+1, expr.length)
-            const oper = arOper[i]
-            return [a, b, oper]
-
-        } 
-    }
-
-    return [expr, "", ""]
-}
-
-const calculate = (a,b,op) => {
+const calculate = (a,op,b) => {
     switch(op) {
         case '+':
             return add(a,b);
@@ -129,19 +117,6 @@ const calculate = (a,b,op) => {
             return divide(a,b);
     }
 }
-
-
-// Below code probably needs to be split into 2 different validation types (for upper and lower display)
-// const validator = (str) => {
-//     const NaNIfString = Number(str);
-//     const lenOfCalcText = lowerDisplay.value.length;
-
-//     if (!lenOfCalcText && isNaN(NaNIfString)) {
-//         console.log("Nope")
-//     } else {
-//         return true
-//     }
-// }
 
 const checkForArOperators = () => {
     const currentDisplayText = upperDisplay.innerText;
@@ -177,8 +152,7 @@ buttons.forEach(button => {
 });
 
 displayContainer.addEventListener("keydown", (trg) => {
-    console.log(trg.key)
-    if (!isNaN(Number(trg.key)) || trg.key == "Backspace") {
+    if (!isNaN(Number(trg.key)) || trg.key == "Backspace" || trg.key == ".") {
         updateLowerDisplay(trg.key)
     }
 

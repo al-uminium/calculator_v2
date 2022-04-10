@@ -37,6 +37,8 @@ html, body {
     display: grid;
     grid-template-rows: 1.5fr 1fr;
     border-radius: 1.5rem;
+    width: 89%;
+    /* height: 100%; */
 }
 
 #display-container:hover {
